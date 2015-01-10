@@ -128,6 +128,7 @@ Pet = function()
 	var _this_image_SizeW = $('#this_image_size_w');
 	var _this_image_SizeH = $('#this_image_size_h');
 	var _this_image_fitted_canvas = $('#image_fit_to_canvas');
+	var _this_canvas_fitted_image = $('#canvas_fit_to_image');
 	var _imageCrop = $('#image_crop');
 	var _imageCrop_this = $('#image_crop_this');
 	var _image_on_crop_button = false;
@@ -157,7 +158,7 @@ Pet = function()
 	var _multiply_filter = $('#multiply');
 	var _multiply_color_filter = $('#multiply-color');
 	var _transparency_filter = $('#gradient-transparency');
-	var _transparency__value_filter = $('#gradient-transparency_value');
+	var _transparency_value_filter = $('#gradient-transparency-value');
 
 	var _event = 'click';
 	var _blur = 'blur';
@@ -198,7 +199,7 @@ Pet = function()
 	function _reset_crop_rectangle(_cropedobject){
 		_cropedobject.width=0;
 		_cropedobject.height=0;
-		_cropedobject.left=1;
+		_cropedobject.left=0;
 		_cropedobject.top=0;
 		_cropedobject.visible=false;
 		_cropedobject.scaleX=1;
@@ -316,8 +317,8 @@ Pet = function()
 			var className = 
 			element.className,
 			offset = 50,
-			left = fabric.util.getRandomInt(0 + offset, _canvasWidth - offset),
-			top = fabric.util.getRandomInt(0 + offset, _canvasHeight - offset),
+			left = fabric.util.getRandomInt(0 + offset, _canvasWidth/2 - offset),
+			top = fabric.util.getRandomInt(0 + offset, _canvasHeight/2 - offset),
 			scale = 1;
 			angle = 0;
 			opacity = 1;
@@ -770,12 +771,19 @@ Pet = function()
 		_adjustablefilters_btn.on(_event, function(){
 			activeObject = _canvas.getActiveObject();
 			if (_enableAdjustableFilter_val === false){
-				if (_enableCustomFilter_val  === true){ return};
+				if (_enableCustomFilter_val  === true){ 
+					_customfilters_select.val("");
+					_disableCustomFilter();
+					_enableCustomFilter_val = false;
+					_customfilters_btn.removeClass('btn-success');
+					activeObject.filters=[];
+					activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
+				};
 				_enableAdjustableFilter();
 				_enableAdjustableFilter_val = true;
 				_adjustablefilters_btn.addClass('btn-success');
 				for (var i = 0; i < _filters_name.length; i++) {
-					$(_filters_name[i]).checked = !!activeObject.filters[i];
+					document.getElementById(_filters_name[i]).checked = !!activeObject.filters[i];
 				}
 
 			}
@@ -784,7 +792,7 @@ Pet = function()
 				_enableAdjustableFilter_val = false;
 				_adjustablefilters_btn.removeClass('btn-success');
 				//activeObject.filters=[];
-				//activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
+				///activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
 			}
 
 		});
@@ -792,18 +800,24 @@ Pet = function()
 		_customfilters_btn.on(_event,function(){
 			activeObject = _canvas.getActiveObject();
 			if (_enableCustomFilter_val === false){
-				if (_enableAdjustableFilter_val  === true){ return};
+				if (_enableAdjustableFilter_val  === true){ 
+					_disableAdjustableFilter();
+					_enableAdjustableFilter_val = false;
+					_adjustablefilters_btn.removeClass('btn-success');
+					activeObject.filters=[];
+					activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
+				};
 				_enableCustomFilter();
 				_enableCustomFilter_val = true;
 				_customfilters_btn.addClass('btn-success');
 			}
 			else{
-				_customfilters_select.val("");
+				//_customfilters_select.val("");
 				_disableCustomFilter();
 				_enableCustomFilter_val = false;
 				_customfilters_btn.removeClass('btn-success');
-				activeObject.filters=[];
-				activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
+				/*activeObject.filters=[];
+				activeObject.applyFilters(_canvas.renderAll.bind(_canvas));*/
 			}
 
 		});
@@ -834,30 +848,68 @@ Pet = function()
 
 		_brightness_filter.on(_event, function() {
 			_applyFilter(3, this.checked && new _filters.Brightness({
-				brightness: parseInt(_brightness_value_filter.attr('value'), 10)
+				brightness: parseInt(_brightness_value_filter.value, 10)
 			}));
 		});
 
 		_brightness_value_filter.on(_change, function() {
-			_applyFilterValue(3, 'brightness', parseInt(this.attr('value'), 10));
+			_applyFilterValue(3, 'brightness', parseInt(this.value, 10));
 		});
 
 		_tint_filter.on(_event, function() {
 			_applyFilter(4, this.checked && new _filters.Tint({
-				color: _tint_color_filter.attr('value'),
-				opacity: parseFloat(_tint_opacity_filter.attr('value'))
+/*				color: _tint_color_filter.attr('value'),
+				opacity: parseFloat(_tint_opacity_filter.attr('value'))*/
+				color: '#3513B0',
+				opacity: 0.5
 			}));
 		});
 
-		_tint_opacity_filter(_change, function(){
-			_applyFilterValue(4, 'opacity', parseFloat(this.attr('value')));
+		_tint_color_filter.on(_change, function(){
+			_applyFilterValue(4, 'color', this.value);
 
 		});
 
-		_tint_color_filter(_change, function(){
-			_applyFilterValue(4, 'color', this.attr('value'));
+		_tint_opacity_filter.on(_change, function(){
+			_applyFilterValue(4, 'opacity', parseFloat(this.value));
 
-		});		
+		});
+
+
+		_blend_filter.on(_event ,function() { 
+			_applyFilter(5, this.checked && new _filters.Blend({
+				color: _blend_color_filter.attr('value'),
+				mode: _blend_mode_filter.attr('value')
+			}));
+		});
+
+		_blend_mode_filter.on(_change, function() {
+			_applyFilterValue(5, 'mode', this.value);
+		});
+
+		_blend_color_filter.on(_change, function() {
+			_applyFilterValue(5, 'color', this.value);
+		});
+
+		_multiply_filter.on(_event, function(){
+			_applyFilter(6, this.checked && new _filters.Multiply({
+				color: _multiply_color_filter.attr('value')
+			}));
+		});
+
+		_multiply_color_filter.on(_change, function(){
+			_applyFilterValue(6,'color', this.value);
+		});
+
+		_transparency_filter.on(_event, function () {
+			_applyFilter(7, this.checked && new _filters.GradientTransparency({
+				threshold: parseInt(_transparency_value_filter.attr('value'), 10)
+			}));
+		});
+
+		_transparency_value_filter.on(_change, function() {
+			_applyFilterValue(7, 'threshold', parseInt(this.value, 10));
+		});
 
 
 		_customfilters_select.change(function()
@@ -865,48 +917,23 @@ Pet = function()
 			var activeObject = _canvas.getActiveObject();
 			if (_canvas.getActiveObject().get('type')==='image')
 			{	
-				activeObject.colorspace = _customfilters_select.val().toLowerCase();
-				if (activeObject.filters.length==0)
-				{
-					switch (_customfilters_select.val().toLowerCase()){
-						case 'gray':	
-							activeObject.filters.push(new _filters.Grayscale());
-							break;
-						case 'invert':
-							activeObject.filters.push(new _filters.Invert());
-							break;
-						case 'sepia1':
-							activeObject.filters.push(new _filters.Sepia());
-							break;
-						case 'sepia2':
-							activeObject.filters.push(new _filters.Sepia2());
-							break;
-					}
-					activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
-					
-				}
-				else
-				{
-					activeObject.filters.pop();
-					switch (_customfilters_select.val().toLowerCase()){
-						case 'gray':	
-							activeObject.filters.push(new _filters.Grayscale());
-							break;
-						case 'invert':
-							activeObject.filters.push(new _filters.Invert());
-							break;
-						case 'sepia1':
-							activeObject.filters.push(new _filters.Sepia());
-							break;
-						case 'sepia2':
-							activeObject.filters.push(new _filters.Sepia2());
-							break;
-					}			
-					activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
-					
-
-				}
-
+				//activeObject.colorspace = _customfilters_select.val().toLowerCase();
+				activeObject.filters=[];
+				switch (_customfilters_select.val().toLowerCase()){
+					case 'gray':	
+					activeObject.filters.push(new _filters.Grayscale());
+					break;
+					case 'invert':
+					activeObject.filters.push(new _filters.Invert());
+					break;
+					case 'sepia1':
+					activeObject.filters.push(new _filters.Sepia());
+					break;
+					case 'sepia2':
+					activeObject.filters.push(new _filters.Sepia2());
+					break;
+				}			
+				activeObject.applyFilters(_canvas.renderAll.bind(_canvas));
 			}
 
 		});
@@ -966,8 +993,11 @@ Pet = function()
 			{
 				activeObject.height=_canvasHeight;
 				activeObject.width=_canvasWidth;
-				activeObject.top=_canvasHeight/2;
-				activeObject.left=_canvasWidth/2;
+				activeObject.currentHeight = _canvasHeight;
+				activeObject.currentWidth = _canvasWidth;
+				//activeObject.top=_canvasHeight/2;
+				//activeObject.left=_canvasWidth/2;
+				activeObject.left = 0;activeObject.top = 0;
 				activeObject.scaleX=1;
 				activeObject.scaleY=1;
 				_this_image_SizeH.val(_canvasHeight);
@@ -976,6 +1006,25 @@ Pet = function()
 
 			}
 		});
+
+		_this_canvas_fitted_image.on(_event, function(){
+			var activeObject = _canvas.getActiveObject();
+			if (activeObject.get('type')==='image')
+			{
+				_canvasHeight = activeObject.currentHeight;
+				_canvasWidth = activeObject.currentWidth;
+				_canvas.setWidth(_canvasWidth);
+				_canvas.setHeight(_canvasHeight);
+				_imageSizeW.val(_canvasWidth);
+				_imageSizeH.val(_canvasHeight);
+				activeObject.left = 0;activeObject.top = 0;
+				activeObject.scaleX = 1;activeObject.scaleY=1;
+				activeObject.width = _canvasWidth;activeObject.height=_canvasHeight;
+				_canvas.renderAll();
+
+			}
+		});
+
 		_imageCrop.on(_event, function()
 		{
 			var activeObject = _canvas.getActiveObject();
@@ -986,8 +1035,9 @@ Pet = function()
 			{
 				//activeObject.selectable=false;	
 				activeObject.angle=0;
-				activeObject.top=_canvasHeight/2;
-				activeObject.left=_canvasWidth/2;
+				//activeObject.top=_canvasHeight/2;
+				//activeObject.left=_canvasWidth/2;
+				activeObject.left = 0; activeObject.top = 0;
 				
 				
 				if (_image_on_crop_button == false){
@@ -1066,8 +1116,11 @@ Pet = function()
 			var height = _cropedobject.height * _cropedobject.scaleY;
 			//var left = _cropedobject.left - _cropobject.left;
 			//var top = _cropedobject.top - _cropobject.top;
+
 			var left = _cropedobject.left;
 			var top = _cropedobject.top;
+			//var left = _cropedobject.left - width/2;
+			//var top = _cropedobject.top - height/2;
 			_canvas.deactivateAll();
 			/*_cropobject.clipTo = function (ctx) {
 				ctx.rect(left, top, width, height);
@@ -1081,7 +1134,7 @@ Pet = function()
 
 			fabric.Image.fromURL(imageUrl , function(image)
 			{
-				image.set({ left:left + width/2, top:top + height/2 , cornersize:10 });
+				image.set({ left:left , top:top , cornersize:10 });
 				image.setCoords();
 				_canvas.add(image);
 				image.bringToFront();

@@ -263,7 +263,7 @@
               <p>
               <label><span>Tint:</span> <input type="checkbox" id="tint" disabled></label>
                 <label><input type="range" id="tint-opacity" min="0" max="1" value="1" step="0.1" ></label> 
-                <label class='label-need-left-align'><span>Color: <input type="color" id="tint-color" value=""></label>
+                <label class='label-need-left-align'><span>Color: <input type="color" id="tint-color" value="00f900"></label>
               </p>
               <p>
                 <label><span>Blend:</span> <input type="checkbox" id="blend" disabled></label>
@@ -283,7 +283,7 @@
                 <label>Color: <input type="color" id="multiply-color" value=""></label>
               </p>
               <label>Transparency: <input type="checkbox" id="gradient-transparency" disabled></label>
-              <input type="range" id="gradient-transparency-value" value="100" min="0" max="255" >
+              <input type="range" id="gradient-transparency-value" value="100" min="-200" max="200" >
               </p>
               </div>
 
@@ -300,8 +300,9 @@
               <p>
                 <label >Image size: </label>
                 <input type="text" id="this_image_size_w" placeholder="Enter image width" value="500" />
-                <input type="text" id="this_image_size_h" placeholder="Enter image heigh" value="300" />
-                <button class="btn btn-success" id="image_fit_to_canvas"> Fit to canvas size</button>
+                <input type="text" id="this_image_size_h" placeholder="Enter image heigh" value="300" /> <br>
+                <button style="margin-left: 160px;" class="btn btn-success" id="image_fit_to_canvas"> Fit image to canvas size</button>
+                <button style="margin-left: 40px;" class="btn btn-success" id="canvas_fit_to_image"> Fit canvas to image size</button>
               </p>
               <p>
                 <label>Crop: </label>

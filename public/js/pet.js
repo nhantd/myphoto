@@ -1,23 +1,3 @@
-
-/**
- * Class for all kind for event binding for Pet's commands and controls
- * 
- * @Author Waqar Alamgir <waqarcs@yahoo.com>
- * @Created 23 Sep 2013
- * @Modified 25 Sep 2013
- *
- */
-
-
-//store image handler before adding
-/*window.onunload = function () { console.log('lets unload windows');}
-
-var image_handle;
-document.getElementById('img_local').value = "";
-document.getElementById('img_local').onchange = function handleImage(e) {
-	image_handle = e.target.files[0];
-}*/
-
 var MESSAGES = [
 	'Fabric library is missing.',
 	'Are you sure?',

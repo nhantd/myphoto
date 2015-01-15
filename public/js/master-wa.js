@@ -1,21 +1,4 @@
-/*(function()
-{
-  if (document.location.hostname === 'localhost') {
-	var links = document.getElementById('header').getElementsByTagName('a');
-	for (var i = 0, len = links.length; i < len; i++) {
-	  // very retarted fix but fuck it
-	  links[i].href = links[i].href.replace('fabricjs.com', 'localhost:4000');
-	}
-  }
-  else {
-	var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
-	s.async = true;
-	s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
-	t.parentNode.insertBefore(s, t);
 
-	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-  }
-})();*/
 
 function clickTabs(panels , buttons , button)
 {
@@ -66,14 +49,3 @@ $(document).ready(function()
 		[$('#object-compose') , $('#object-controls') , $('#object-export') , $('#canvas-settings')]
 	);
 });
-
-/*(function(){
-  var mainScriptEl = document.getElementById('main');
-  if (!mainScriptEl) return;
-  var preEl = document.createElement('pre');
-  var codeEl = document.createElement('code');
-  codeEl.innerHTML = mainScriptEl.innerHTML;
-  codeEl.className = 'language-javascript';
-  preEl.appendChild(codeEl);
-  document.getElementById('bd-wrapper').appendChild(preEl);
-})();*/

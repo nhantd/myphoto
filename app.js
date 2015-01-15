@@ -30,39 +30,12 @@ console.log(ip);
 
 var app = express();
 
-function processPost(request, response) {
-	var result = '';
-
-	request.on('data', function(data) {
-		console.log(data);
-	});
-	return result;	
-}
-
-
-function processGet() {
-    var result = '';
-
-    files = fs.readdirSync("./public/data");
-    //console.log(files);
-    for(var i = 0; i <files.length; i++) {
-    	result = result + "'"+files[i]+ "',";
-
-    }
-    return result;
-}
-
-
 app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
 app.use(express.bodyParser());
 app.set('view engine', 'ejs');
-
-/*app.get('/', function(req,res) {
-    res.sendfile('public/poc.html');
-});*/
 
 app.get('/', function(req,res){
 	//res.sendfile('public/poc.html');
@@ -74,8 +47,8 @@ app.post('/upload',function(req,res){
 	file_data = req.body['file_data'].replace(/^data:image\/png;base64,/, '');
 	file_type = req.body['file_type'];
 	file_name = req.body['file_name'];
-	var outputFilename = path.join(__dirname, 'public')+'/data/'+file_name + '.png';
-	//console.log(file_data);
+	var outputFilename = path.join(__dirname, 'public')+'/data/'+file_name + '.' + file_type;
+	//console.log(file_type);
 
 	fs.writeFile(outputFilename, file_data,'base64', function(err) {
 		if(err) {
@@ -85,8 +58,8 @@ app.post('/upload',function(req,res){
 		}
 	}); 
 
-/*	files = fs.readdirSync('./public/data');
-	res.render('index.ejs',{files: files});*/
+	files = fs.readdirSync('./public/data');
+	res.render('index.ejs',{files: files});
 	/*res.writeHead(200, {'content-type': 'application/json'});
 	res.write(JSON.stringify({ success: true }));*/
 	//res.end();
@@ -94,10 +67,10 @@ app.post('/upload',function(req,res){
 
 
 app.post('/download',function(req,res){
-	console.log(req.body);
 	file_data = req.body['file_data_download'].replace(/^data:image\/png;base64,/, '');
 	//file_type = req.body['file_type'];
-	var outputFilename = path.join(__dirname, 'public')+'/download/save.' + 'png';
+	savename = new Date().toString().replace(/ /g,'-') + '.png';
+	var outputFilename = path.join(__dirname, 'public')+'/download/' +savename;
 	//console.log(file_data);
 
 	fs.writeFile(outputFilename, file_data,'base64', function(err) {

@@ -24,10 +24,10 @@ var MESSAGES = [
 	'This browser doesn\'t provide this feature',
 	'Saved',
 	'Post data is missing',
-	'Saving draft',
+	'Saving ',
 	'Exporting as JPEG',
 	'Exporting as PNG',
-	'Loading from draft',
+	'Loading ',
 	'Maximum width of the image can be set to ',
 	'Maximum height of the image can be set to ',
 	'Value is invalid',
@@ -96,7 +96,6 @@ Pet = function()
 	var _rasterizeJpeg = $('#rasterize-jpeg');
 	var _rasterizeSvg = $('#rasterize-svg');
 	var _rasterizeJson = $('#rasterize-json');
-	var _rasterizeDraft = $('#rasterize-draft');
 	var _download_image = $('#download-image');
 
 	var _removeSelected = $('#remove-selected');
@@ -119,7 +118,6 @@ Pet = function()
 	var _originX = $('.origin-x');
 	var _originY = $('.origin-y');
 	var _complexity = $('#complexity strong');
-	var _loadDraft = $('#load-draft');
 	var _addImageBtn = 'add_image_btn';
 	var _addTextBtn = 'add_text_btn';
 	var _uploadFileForm = $('#uploadFileForm');
@@ -346,11 +344,6 @@ Pet = function()
 			}
 		});
 		
-		_loadDraft.bind(_event , function(event)
-		{
-			var url = SITE_URL_APPLICATION + '?load';
-			window.location.href = url;
-		});
 	}
 	
 	function _leEventBindingCompose()
@@ -513,10 +506,12 @@ Pet = function()
 			}
 			else
 			{
-				_fileData.val($('#' + _canvasEle).get(0).toDataURL('image/jpeg' , 100));
+				_fileData.val(_canvas.toDataURL('jpeg'));
 				_fileType.val('jpeg');
+				_fileName.val(_image_server_name_save.val());
 				_uploadFileForm.submit();
 				petUtil.fadeOutLoader(MESSAGES[3]);
+				_image_server_name_save.val('');
 			}
 		});
 
@@ -540,21 +535,6 @@ Pet = function()
 
 		});
 		
-		_rasterizeDraft.bind(_event , function(event)
-		{	
-			petUtil.showLoader(MESSAGES[5]);
-			$.post(SITE_URL_APPLICATION + PAGES[0] , { file_data:JSON.stringify( _canvas.toDatalessJSON() ) } , function(r)
-			{
-				if(r == '1')
-				{
-					petUtil.fadeOutLoader(MESSAGES[3]);
-				}
-				else
-				{
-					petUtil.fadeOutLoader(MESSAGES[4]);
-				}
-			});
-		});
 	}
 	
 	function _leEventBindingControls()

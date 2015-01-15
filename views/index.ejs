@@ -80,7 +80,7 @@
         <canvas id="canvas" width="600" height="400"></canvas>
       </figure>
       <div class="buttons-positions">
-        <button class="btn btn-success" id="load-draft">Load Draft</button> <button id="clear" class="btn btn-danger clear">Clear</button> <div id="loader"><img src="./images/ajax-loader.gif" alt="loading"/> <span>Loading</span></div>
+        <button id="clear" class="btn btn-danger clear">Clear</button> <div id="loader"><img src="./images/ajax-loader.gif" alt="loading"/> <span>Loading</span></div>
       </div>
     </div>
 
@@ -336,9 +336,9 @@
             <input type="text" id="image_server_name" class="last" placeholder="Enter image name to save" />
             <br/>
             <p>
-              <button class="btn btn-success" id="rasterize">PNG</button>
-              <button class="btn btn-success" id="rasterize-jpeg">JPEG</button><br/>
-              <i>JPEG format does not support transparency, so set background to #fff before exporting it.</i>
+              <button class="btn btn-success" id="rasterize">Save</button>
+              <!-- <button class="btn btn-success" id="rasterize-jpeg">JPEG</button><br/>
+              <i>JPEG format does not support transparency, so set background to #fff before exporting it.</i> -->
             </p>
             <br/>
             <p>
@@ -350,12 +350,6 @@
             </p>
             <br/>
 
-            <p>
-              <strong>Actions</strong>
-            </p>
-            <p>
-              <button class="btn btn-success" id="rasterize-draft">Save as Draft</button>
-            </p>
           </div>
 
           <div class="tab-pane" id="canvas-settings">

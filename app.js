@@ -40,6 +40,7 @@ app.set('view engine', 'ejs');
 app.get('/', function(req,res){
 	//res.sendfile('public/poc.html');
 	files = fs.readdirSync('./public/data');
+	//console.log(files);
 	res.render('index.ejs',{files: files});
 });
 

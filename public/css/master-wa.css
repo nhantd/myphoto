@@ -123,6 +123,7 @@ body .canvasWindow #complexity strong {
 /* line 30, ../scss/master-wa.scss */
 body .canvasWindow .buttons-positions {
   margin-top: 10px;
+  margin-left: 40px;
   float: left;
   clear: both;
 }

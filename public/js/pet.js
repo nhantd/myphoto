@@ -113,6 +113,7 @@ Pet = function()
 	var _image_local_handle;
 	var _image_server_sample = $('#sample_image');
 	var _image_server_name_save = $('#image_server_name');
+	var _image_server_value = "";
 
 	var _text = $('#text');
 	var _originX = $('.origin-x');
@@ -404,14 +405,25 @@ Pet = function()
 
 					console.log("read");
 
-		
-					fabric.Image.fromURL(imageUrl , function(image)
+/*					var imgObj = new Image();
+					imgObj.crossOrigin = "anonymous";
+					imgObj.src =  imageUrl;
 					{
+						var image = new fabric.Image(imgObj);
 						image.set({ left:left , top:top , angle:angle , cornersize:10 });
 						image.scale(scale).setCoords();
 						_canvas.add(image);
 						_canvas.renderAll();
-					});
+					}*/
+
+
+					fabric.Image.fromURL(imageUrl , function(image)
+					{	//image.set({crossOrigin: "anonymous"});
+						image.set({ left:left , top:top , angle:angle , cornersize:10});
+						image.scale(scale).setCoords();
+						_canvas.add(image);
+						_canvas.renderAll();
+					} ,{crossOrigin: "anonymous"});
 
 					_canvas.deactivateAll();
 					_imageWrapper.hide();

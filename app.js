@@ -55,7 +55,7 @@ app.post('/upload',function(req,res){
 		if(err) {
 			console.log(err);
 		} else {
-			console.log("JSON saved to " + outputFilename);
+			console.log("upload data saved to " + outputFilename);
 		}
 	}); 
 
@@ -70,7 +70,7 @@ app.post('/upload',function(req,res){
 app.post('/download',function(req,res){
 	file_data = req.body['file_data_download'].replace(/^data:image\/png;base64,/, '');
 	//file_type = req.body['file_type'];
-	savename = new Date().toString().replace(/ /g,'-') + '.png';
+	savename = new Date().toString().replace(/ /g,'-') +Math.floor(Math.random()*10000+1).toString()+ '.png';
 	var outputFilename = path.join(__dirname, 'public')+'/download/' +savename;
 	//console.log(file_data);
 
@@ -78,7 +78,7 @@ app.post('/download',function(req,res){
 		if(err) {
 			console.log(err);
 		} else {
-			console.log("JSON saved to " + outputFilename);
+			console.log("download data saved to " + outputFilename);
 		}
 	});
 	var file = fs.createReadStream(outputFilename);

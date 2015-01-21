@@ -2,8 +2,8 @@
 
 
 Online image editor using HTML5/ FabricJS.
-Technology i used:
 
+Technology i used:
 Client side: HTML5, jQuery, Boostrap.
 
 Server side: NodeJs, ExpressJS.
